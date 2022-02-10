@@ -1,0 +1,1 @@
+void secure_getenv() {}

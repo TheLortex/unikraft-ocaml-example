@@ -1,0 +1,17 @@
+---
+specification: '0.5'
+name: helloocaml
+unikraft:
+  version: 0.7.0
+targets:
+  - architecture: x86_64
+    platform: kvm
+libraries:
+  ocaml:
+    version: 2beaa16
+  gcc:
+    version: '0.6'
+  pthread-embedded:
+    version: '0.6'
+  newlib:
+    version: '0.6'
