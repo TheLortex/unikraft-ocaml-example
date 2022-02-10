@@ -1,4 +1,5 @@
-#include <sys/time.h>
+#include <sys/time.h>       
+#include <unistd.h>
 
 #include <caml/mlvalues.h>
 #include <caml/alloc.h>

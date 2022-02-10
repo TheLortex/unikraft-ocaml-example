@@ -1,4 +1,7 @@
 (executable
  (name program)
- (modes (native object))
-)
+ (modes
+  (native object))
+ (foreign_stubs
+  (language c)
+  (names stubs)))

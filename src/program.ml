@@ -74,24 +74,21 @@ let wakeup st now : bool * float =
 
 let rec schedule st =
   if Queue.is_empty st.run_q then (* No runnable threads *)
-    (Printf.printf "no runnable threads.\n%!";
-    if Hashtbl.length st.sleep_ht = 0 then Printf.printf "DONE.\n%!" (* We are done. *)
+    if Hashtbl.length st.sleep_ht = 0 then () (* We are done. *)
     else
       let now = gettimeofday () in
       let (thrd_has_woken_up, next_wakeup_time) = wakeup st now in
       if thrd_has_woken_up then
         schedule st
       else if next_wakeup_time = max_float then
-        failwith "finished"
+        assert false
       else (
-      Printf.printf "Sleeping for %f\n%!" (next_wakeup_time -. now);  
       c_sleep (next_wakeup_time -. now);
       ignore (wakeup st (gettimeofday ()));
       schedule st
-      ))
+      )
   else (* Still have runnable threads *)
-(Printf.printf "still runnable threads.\n%!";
-    dequeue st)
+    dequeue st
 
 let run main =
   let st = init () in
@@ -121,26 +118,37 @@ let run main =
   fork st main
 
 
+let a = ref 0
+
+let b = ref 0
+
+let c = ref 0
+
 let rec loop1 () =
-  Printf.printf "1\n%!";
-  sleep 0.3;
+  incr a;
+  sleep 0.134;
   loop1 ()
 
 let rec loop2 () =
-  Printf.printf "2\n%!";
-  sleep 0.42;
+  incr b;
+  sleep 1.0;
   loop2 ()
 
 let rec loop3 () =
-  Printf.printf "3\n%!";
-  sleep 0.57;
+  incr c;
+  sleep 0.0037;
   loop3 ()
-            
+
+let rec printer () =
+  sleep 0.05;
+  Printf.printf "%5d %5d %5d\r%!" !a !b !c;
+  printer ()
 
 let program () =
   fork loop1;
   fork loop2;
-  loop3 ()
+  fork loop3;
+  printer ()
 
 let () =
   Printf.printf "Hello: %f\n%!" (gettimeofday ());

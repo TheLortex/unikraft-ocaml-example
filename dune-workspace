@@ -1,5 +1,6 @@
 (lang dune 2.0)
 
-(env (_ 
- (c_flags "nothing")
-))
+(env
+ (_
+  (flags -without-runtime)
+  (c_flags %{env:CFLAGS=--please-run-with-unikraft})))

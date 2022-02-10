@@ -4,8 +4,11 @@ $(eval $(call addlib,apphelloocaml))
 LIBS := $(UK_LIBS)/gcc:$(UK_LIBS)/pthread-embedded:$(UK_LIBS)/newlib:$(UK_LIBS)/ocaml
 
 APPHELLOOCAML_SRCS-y += $(APPHELLOOCAML_BASE)/main.c
-APPHELLOOCAML_OBJS-y += $(APPHELLOOCAML_BASE)/program.o
+APPHELLOOCAML_OBJS-y += $(APPHELLOOCAML_BASE)/_build/default/src/program.exe.o
 
+.PHONY: 
+$(APPHELLOOCAML_BASE)/_build/default/src/program.exe.o: $(APPHELLOOCAML_BASE)/src/dune $(APPHELLOOCAML_BASE)/src/program.ml $(APPHELLOOCAML_BASE)/src/stubs.c
+	cd $(APPHELLOOCAML_BASE) && \
+		CFLAGS="$(CFLAGS) $(CFLAGS-y) $(CINCLUDES) $(CINCLUDES-y)" \
+		dune build src/
 
-#  ocamlopt ~/.opam/trunk/lib/ocaml/unix.cmxa ocaml.ml -output-obj -o program.o
-# 
